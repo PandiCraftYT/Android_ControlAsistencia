@@ -46,11 +46,13 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
 
 
         // Asegurarse de mostrar todos los días
-        holder.lunes.setText("Lunes: " + (horario.getLunes().isEmpty() ? "No disponible" : horario.getLunes()));
-        holder.martes.setText("Martes: " + (horario.getMartes().isEmpty() ? "No disponible" : horario.getMartes()));
-        holder.miercoles.setText("Miércoles: " + (horario.getMiercoles().isEmpty() ? "No disponible" : horario.getMiercoles()));
-        holder.jueves.setText("Jueves: " + (horario.getJueves().isEmpty() ? "No disponible" : horario.getJueves()));
-        holder.viernes.setText("Viernes: " + (horario.getViernes().isEmpty() ? "No disponible" : horario.getViernes()));
+        // Asegurarse de mostrar todos los días con control de nulls
+        holder.lunes.setText("Lunes: " + (horario.getLunes() != null && !horario.getLunes().isEmpty() ? horario.getLunes() : "No disponible"));
+        holder.martes.setText("Martes: " + (horario.getMartes() != null && !horario.getMartes().isEmpty() ? horario.getMartes() : "No disponible"));
+        holder.miercoles.setText("Miércoles: " + (horario.getMiercoles() != null && !horario.getMiercoles().isEmpty() ? horario.getMiercoles() : "No disponible"));
+        holder.jueves.setText("Jueves: " + (horario.getJueves() != null && !horario.getJueves().isEmpty() ? horario.getJueves() : "No disponible"));
+        holder.viernes.setText("Viernes: " + (horario.getViernes() != null && !horario.getViernes().isEmpty() ? horario.getViernes() : "No disponible"));
+
     }
 
     @Override

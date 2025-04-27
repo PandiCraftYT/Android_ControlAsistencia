@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String BASE_URL = "http://192.168.100.55:8080/";  // Reemplaza localhost por la IP de tu máquina
+    private static final String BASE_URL = "http://192.168.100.4:8080/";  // Reemplaza localhost por la IP de tu máquina
 // Reemplaza con tu URL base
 
     private static Retrofit retrofit;
