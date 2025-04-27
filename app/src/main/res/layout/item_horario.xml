@@ -1,0 +1,119 @@
+<!-- item_horario.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/border">
+
+    <!-- Separador -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Nombre del Docente -->
+    <TextView
+        android:id="@+id/horario_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Asignatura -->
+    <TextView
+        android:id="@+id/horario_asignatura"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Asignatura"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Grado y Grupo -->
+    <TextView
+        android:id="@+id/horario_grupo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grado/Grupo"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Hora -->
+    <TextView
+        android:id="@+id/horario_hora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hora"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Turno -->
+    <TextView
+        android:id="@+id/horario_turno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Turno"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Días -->
+    <TextView
+        android:id="@+id/horario_lunes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lunes: No disponible"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/horario_martes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Martes: No disponible"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/horario_miercoles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Miércoles: No disponible"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/horario_jueves"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jueves: No disponible"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/horario_viernes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Viernes: No disponible"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Zona -->
+    <TextView
+        android:id="@+id/horario_zona"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zona"
+        android:textSize="14sp"/>
+
+    <!-- Separador -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>
