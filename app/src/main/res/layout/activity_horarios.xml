@@ -1,21 +1,117 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#FFFFFF"
+    tools:context=".HorariosActivity">
 
-    <!-- Título de la zona -->
-    <TextView
-        android:id="@+id/zoneTitle"
+    <!-- ENCABEZADO -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/encabezadoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#E0E0E0"
+        android:padding="8dp"
+        android:elevation="4dp">
+
+        <!-- Logo UAS -->
+        <ImageView
+            android:id="@+id/logoUAS"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/logouas"
+            android:contentDescription="Logo UAS"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tituloApp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Control de Asistencia"
+            android:textSize="20sp"
+            android:textColor="#343C6A"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/logoUAS"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/relojHora"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp" />
+
+        <!-- Reloj en vivo -->
+        <TextView
+            android:id="@+id/relojHora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="22sp"
+            android:textColor="#000"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Icono Usuario -->
+        <ImageView
+            android:id="@+id/iconoUsuario"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/usuario"
+            android:contentDescription="Icono Usuario"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Botón ATRÁS -->
+    <LinearLayout
+        android:id="@+id/btnAtras"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Horarios"
-        android:textSize="24sp"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true">
 
-    <!-- RecyclerView donde se mostrarán los horarios -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/flecha"
+            android:contentDescription="Icono Atrás" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ATRÁS"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <!-- Línea divisora -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D3D3D3" />
+
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/horariosRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false" />
 </LinearLayout>

@@ -14,9 +14,11 @@ import java.util.List;
 public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.HorarioViewHolder> {
 
     private List<Horario> horarios;
+    private String diaActual;
 
-    public HorariosAdapter(List<Horario> horarios) {
+    public HorariosAdapter(List<Horario> horarios, String diaActual) {
         this.horarios = horarios;
+        this.diaActual = diaActual;
     }
 
     @Override
@@ -27,32 +29,30 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
 
     @Override
     public void onBindViewHolder(HorarioViewHolder holder, int position) {
-
         Horario horario = horarios.get(position);
+
         holder.nombre.setText(horario.getNombre());
         holder.asignatura.setText(horario.getAsignatura());
-        holder.grupo.setText("Grado y Grupo: " + horario.getGrado_grupo());
-        holder.hora.setText("Horas Asignadas: " + horario.getHora());
-        holder.turno.setText("Turno: " + horario.getTurno());
-        holder.zona.setText("Zona: " + horario.getZona());
+        holder.grupo.setText(horario.getGrado_grupo());
 
-        //log para verificar los datos
-        System.out.println("Nombre: " + horario.getNombre());
-        System.out.println("Asignatura: " + horario.getAsignatura());
-        System.out.println("Grupo: " + horario.getGrado_grupo());
-        System.out.println("Hora: " + horario.getHora());
-        System.out.println("Turno: " + horario.getTurno());
-        System.out.println("Zona: " + horario.getZona());
-
-
-        // Asegurarse de mostrar todos los días
-        // Asegurarse de mostrar todos los días con control de nulls
-        holder.lunes.setText("Lunes: " + (horario.getLunes() != null && !horario.getLunes().isEmpty() ? horario.getLunes() : "No disponible"));
-        holder.martes.setText("Martes: " + (horario.getMartes() != null && !horario.getMartes().isEmpty() ? horario.getMartes() : "No disponible"));
-        holder.miercoles.setText("Miércoles: " + (horario.getMiercoles() != null && !horario.getMiercoles().isEmpty() ? horario.getMiercoles() : "No disponible"));
-        holder.jueves.setText("Jueves: " + (horario.getJueves() != null && !horario.getJueves().isEmpty() ? horario.getJueves() : "No disponible"));
-        holder.viernes.setText("Viernes: " + (horario.getViernes() != null && !horario.getViernes().isEmpty() ? horario.getViernes() : "No disponible"));
-
+        // Mostrar solo el horario del día actual
+        switch (diaActual.toLowerCase()) {
+            case "lunes":
+                holder.hora.setText(horario.getLunes());
+                break;
+            case "martes":
+                holder.hora.setText(horario.getMartes());
+                break;
+            case "miércoles":
+                holder.hora.setText(horario.getMiercoles());
+                break;
+            case "jueves":
+                holder.hora.setText(horario.getJueves());
+                break;
+            case "viernes":
+                holder.hora.setText(horario.getViernes());
+                break;
+        }
     }
 
     @Override
@@ -61,8 +61,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
     }
 
     public static class HorarioViewHolder extends RecyclerView.ViewHolder {
-
-        TextView nombre, asignatura, grupo, hora, turno, lunes, martes, miercoles, jueves, viernes, zona;
+        TextView nombre, asignatura, grupo, hora;
 
         public HorarioViewHolder(View itemView) {
             super(itemView);
@@ -70,13 +69,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
             asignatura = itemView.findViewById(R.id.horario_asignatura);
             grupo = itemView.findViewById(R.id.horario_grupo);
             hora = itemView.findViewById(R.id.horario_hora);
-            turno = itemView.findViewById(R.id.horario_turno);
-            lunes = itemView.findViewById(R.id.horario_lunes);
-            martes = itemView.findViewById(R.id.horario_martes);
-            miercoles = itemView.findViewById(R.id.horario_miercoles);
-            jueves = itemView.findViewById(R.id.horario_jueves);
-            viernes = itemView.findViewById(R.id.horario_viernes);
-            zona = itemView.findViewById(R.id.horario_zona);
         }
     }
 }
