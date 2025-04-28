@@ -22,17 +22,14 @@
             android:alpha="0.3" />
 
         <TextView
-            android:id="@+id/txtZona"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
-            android:text="Zona"
-            android:textSize="16sp"
+            android:id="@+id/nombreZona"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Nombre Zona"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#000"/>
-
+            android:textColor="#000000"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

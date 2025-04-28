@@ -1,45 +1,45 @@
 package com.example.controlasistencias.Modelos;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.controlasistencias.HorariosActivity;
 import com.example.controlasistencias.R;
-
 import java.util.List;
 
-public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ZonaViewHolder> {
+public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
 
     private Context context;
     private List<String> zonas;
+    private OnZonaClickListener listener;
 
-    public ZonaAdapter(Context context, List<String> zonas) {
+    public interface OnZonaClickListener {
+        void onZonaClick(String zonaSeleccionada);
+    }
+
+    public ZonaAdapter(Context context, List<String> zonas, OnZonaClickListener listener) {
         this.context = context;
         this.zonas = zonas;
+        this.listener = listener;
     }
 
+    @NonNull
     @Override
-    public ZonaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_zona, parent, false);
-        return new ZonaViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ZonaViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String zona = zonas.get(position);
-        holder.txtZona.setText(zona);
+        holder.nombreZona.setText(zona);
 
-        holder.cardZona.setOnClickListener(v -> {
-            Intent intent = new Intent(context, HorariosActivity.class);
-            intent.putExtra("zona", zona);
-            context.startActivity(intent);
+        holder.itemView.setOnClickListener(v -> {
+            listener.onZonaClick(zona);
         });
     }
 
@@ -48,14 +48,12 @@ public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ZonaViewHolder
         return zonas.size();
     }
 
-    public static class ZonaViewHolder extends RecyclerView.ViewHolder {
-        CardView cardZona;
-        TextView txtZona;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView nombreZona;
 
-        public ZonaViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            cardZona = itemView.findViewById(R.id.cardZona);
-            txtZona = itemView.findViewById(R.id.txtZona);
+            nombreZona = itemView.findViewById(R.id.nombreZona); // Asegúrate que este ID esté en tu item_zona.xml
         }
     }
 }

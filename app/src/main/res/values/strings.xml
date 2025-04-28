@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ControlAsistencias</string>
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/dialog_background</item>
+    </style>
+
 </resources>
