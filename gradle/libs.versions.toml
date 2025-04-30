@@ -10,9 +10,12 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 retrofit = "2.9.0"
 recyclerview = "1.4.0"
+poi = "5.2.3"
 
 [libraries]
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.1.4" }
+poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version.ref = "poi" }
+poi = { group = "org.apache.poi", name = "poi", version.ref = "poi" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

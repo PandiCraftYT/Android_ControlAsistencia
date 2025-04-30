@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.controlasistencias"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
     // recyclerview
     implementation(libs.recyclerview)
     // retrofit

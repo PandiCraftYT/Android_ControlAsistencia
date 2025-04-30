@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlasistencias.Modelos.Horario;
+import com.example.controlasistencias.R;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
     private List<Horario> horarios;
     private String diaActual;
 
+    // Constructor actualizado con el día actual
     public HorariosAdapter(List<Horario> horarios, String diaActual) {
         this.horarios = horarios;
         this.diaActual = diaActual;
@@ -36,22 +38,30 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
         holder.grupo.setText(horario.getGrado_grupo());
 
         // Mostrar solo el horario del día actual
+        String horaDia = "";
         switch (diaActual.toLowerCase()) {
             case "lunes":
-                holder.hora.setText(horario.getLunes());
+                horaDia = horario.getLunes();
                 break;
             case "martes":
-                holder.hora.setText(horario.getMartes());
+                horaDia = horario.getMartes();
                 break;
             case "miércoles":
-                holder.hora.setText(horario.getMiercoles());
+            case "miercoles":  // por si viene sin tilde
+                horaDia = horario.getMiercoles();
                 break;
             case "jueves":
-                holder.hora.setText(horario.getJueves());
+                horaDia = horario.getJueves();
                 break;
             case "viernes":
-                holder.hora.setText(horario.getViernes());
+                horaDia = horario.getViernes();
                 break;
+        }
+
+        if (horaDia != null && !horaDia.trim().isEmpty()) {
+            holder.hora.setText(horaDia);
+        } else {
+            holder.hora.setText("No disponible");
         }
     }
 
@@ -60,6 +70,7 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
         return horarios.size();
     }
 
+    // ViewHolder
     public static class HorarioViewHolder extends RecyclerView.ViewHolder {
         TextView nombre, asignatura, grupo, hora;
 

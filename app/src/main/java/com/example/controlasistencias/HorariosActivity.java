@@ -1,27 +1,33 @@
 package com.example.controlasistencias;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlasistencias.Api.ApiService;
 import com.example.controlasistencias.Api.RetrofitClient;
 import com.example.controlasistencias.Modelos.Horario;
-import com.example.controlasistencias.HorariosAdapter;
 
-import java.text.SimpleDateFormat;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,10 +37,11 @@ public class HorariosActivity extends AppCompatActivity {
 
     private RecyclerView horariosRecyclerView;
     private HorariosAdapter horariosAdapter;
+    private ImageView btnExportar;
+    private View btnAtras;
     private TextView relojHora;
     private Handler handler = new Handler();
     private Runnable runnable;
-
     private String diaActual;
 
     @Override
@@ -43,15 +50,21 @@ public class HorariosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_horarios);
 
         horariosRecyclerView = findViewById(R.id.horariosRecyclerView);
+        btnExportar = findViewById(R.id.btnExportarExcel);
+        btnAtras = findViewById(R.id.btnAtras);
+        relojHora = findViewById(R.id.relojHora);
+
         horariosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        relojHora = findViewById(R.id.relojHora);
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, 1);
+
         iniciarRelojEnVivo();
+        diaActual = obtenerDiaActual();
 
-        LinearLayout btnAtras = findViewById(R.id.btnAtras);
         btnAtras.setOnClickListener(v -> finish());
-
-        diaActual = obtenerDiaActual(); // Lunes, Martes, Miércoles, etc.
 
         String zona = getIntent().getStringExtra("zona");
 
@@ -60,21 +73,17 @@ public class HorariosActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<List<Horario>> call, Response<List<Horario>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            List<Horario> horariosOriginales = response.body();
-                            List<Horario> horariosFiltrados = filtrarPorDia(horariosOriginales);
-
-                            if (horariosFiltrados.isEmpty()) {
-                                Toast.makeText(HorariosActivity.this, "Hoy no hay clases para mostrar.", Toast.LENGTH_LONG).show();
-                            }
-
-                            horariosAdapter = new HorariosAdapter(horariosFiltrados, diaActual);
+                            List<Horario> horarios = filtrarHorariosDelDia(response.body());
+                            horariosAdapter = new HorariosAdapter(horarios, diaActual);
                             horariosRecyclerView.setAdapter(horariosAdapter);
+
+                            btnExportar.setOnClickListener(v -> exportarHorariosAExcel(horarios));
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Horario>> call, Throwable t) {
-                        Log.e("HorariosActivity", "Error al obtener horarios: " + t.getMessage());
+                        Toast.makeText(HorariosActivity.this, "Error al obtener horarios", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -83,58 +92,83 @@ public class HorariosActivity extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                if (relojHora != null) {
-                    String horaActual = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                    relojHora.setText(horaActual);
-                    handler.postDelayed(this, 1000);
-                }
+                String horaActual = java.text.DateFormat.getTimeInstance(java.text.DateFormat.MEDIUM).format(new java.util.Date());
+                relojHora.setText(horaActual);
+                handler.postDelayed(this, 1000);
             }
         };
         handler.post(runnable);
+    }
+
+    private String obtenerDiaActual() {
+        String[] dias = {"domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"};
+        Calendar calendar = Calendar.getInstance();
+        int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
+        return dias[diaSemana - 1];
+    }
+
+    private List<Horario> filtrarHorariosDelDia(List<Horario> lista) {
+        List<Horario> filtrados = new ArrayList<>();
+        for (Horario h : lista) {
+            String horaDia = "";
+            switch (diaActual) {
+                case "lunes": horaDia = h.getLunes(); break;
+                case "martes": horaDia = h.getMartes(); break;
+                case "miércoles": horaDia = h.getMiercoles(); break;
+                case "jueves": horaDia = h.getJueves(); break;
+                case "viernes": horaDia = h.getViernes(); break;
+            }
+            if (horaDia != null && !horaDia.trim().isEmpty() && !horaDia.equals("null")) {
+                filtrados.add(h);
+            }
+        }
+        return filtrados;
+    }
+
+    private void exportarHorariosAExcel(List<Horario> listaHorarios) {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Horarios del Día");
+
+            Row header = sheet.createRow(0);
+            header.createCell(0).setCellValue("Profesor");
+            header.createCell(1).setCellValue("Materia");
+            header.createCell(2).setCellValue("Grupo");
+            header.createCell(3).setCellValue("Horario");
+
+            for (int i = 0; i < listaHorarios.size(); i++) {
+                Horario h = listaHorarios.get(i);
+                Row row = sheet.createRow(i + 1);
+                row.createCell(0).setCellValue(h.getNombre());
+                row.createCell(1).setCellValue(h.getAsignatura());
+                row.createCell(2).setCellValue(h.getGrado_grupo());
+
+                String horario = "";
+                switch (diaActual) {
+                    case "lunes": horario = h.getLunes(); break;
+                    case "martes": horario = h.getMartes(); break;
+                    case "miércoles": horario = h.getMiercoles(); break;
+                    case "jueves": horario = h.getJueves(); break;
+                    case "viernes": horario = h.getViernes(); break;
+                }
+                row.createCell(3).setCellValue(horario != null ? horario : "No disponible");
+            }
+
+            File file = new File(getExternalFilesDir(null), "HorariosDia_" + System.currentTimeMillis() + ".xlsx");
+            FileOutputStream fos = new FileOutputStream(file);
+            workbook.write(fos);
+            fos.close();
+            workbook.close();
+            Toast.makeText(this, "Excel creado:\n" + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error al exportar: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
-    }
-
-    private String obtenerDiaActual() {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE", new Locale("es", "ES"));
-        return sdf.format(new Date());
-    }
-
-    private List<Horario> filtrarPorDia(List<Horario> lista) {
-        List<Horario> filtrados = new ArrayList<>();
-        for (Horario horario : lista) {
-            switch (diaActual.toLowerCase()) {
-                case "lunes":
-                    if (horario.getLunes() != null && !horario.getLunes().isEmpty()) {
-                        filtrados.add(horario);
-                    }
-                    break;
-                case "martes":
-                    if (horario.getMartes() != null && !horario.getMartes().isEmpty()) {
-                        filtrados.add(horario);
-                    }
-                    break;
-                case "miércoles":
-                    if (horario.getMiercoles() != null && !horario.getMiercoles().isEmpty()) {
-                        filtrados.add(horario);
-                    }
-                    break;
-                case "jueves":
-                    if (horario.getJueves() != null && !horario.getJueves().isEmpty()) {
-                        filtrados.add(horario);
-                    }
-                    break;
-                case "viernes":
-                    if (horario.getViernes() != null && !horario.getViernes().isEmpty()) {
-                        filtrados.add(horario);
-                    }
-                    break;
-            }
-        }
-        return filtrados;
     }
 }
