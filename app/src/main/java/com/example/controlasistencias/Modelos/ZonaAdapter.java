@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.controlasistencias.R;
+
 import java.util.List;
 
 public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
@@ -17,7 +21,7 @@ public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
     private OnZonaClickListener listener;
 
     public interface OnZonaClickListener {
-        void onZonaClick(String zonaSeleccionada);
+        void onZonaClick(String zona);
     }
 
     public ZonaAdapter(Context context, List<String> zonas, OnZonaClickListener listener) {
@@ -38,9 +42,31 @@ public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
         String zona = zonas.get(position);
         holder.nombreZona.setText(zona);
 
-        holder.itemView.setOnClickListener(v -> {
-            listener.onZonaClick(zona);
-        });
+        switch (zona.toLowerCase()) {
+            case "gallinero":
+                holder.imagenZona.setImageResource(R.drawable.departamento);
+                break;
+            case "edificio 1":
+                holder.imagenZona.setImageResource(R.drawable.edificio1);
+                break;
+            case "edificio 2":
+                holder.imagenZona.setImageResource(R.drawable.edificio2);
+                break;
+            case "edificio 3":
+                holder.imagenZona.setImageResource(R.drawable.edicio3);
+                break;
+            case "edificio 4":
+                holder.imagenZona.setImageResource(R.drawable.edificio4);
+                break;
+            case "sotano":
+                holder.imagenZona.setImageResource(R.drawable.sotano);
+                break;
+            default:
+                holder.imagenZona.setImageResource(R.drawable.uasfondo);
+                break;
+        }
+
+        holder.itemView.setOnClickListener(v -> listener.onZonaClick(zona));
     }
 
     @Override
@@ -50,10 +76,12 @@ public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nombreZona;
+        ImageView imagenZona;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            nombreZona = itemView.findViewById(R.id.nombreZona); // Asegúrate que este ID esté en tu item_zona.xml
+            nombreZona = itemView.findViewById(R.id.nombreZona);
+            imagenZona = itemView.findViewById(R.id.imagenZona);
         }
     }
 }
