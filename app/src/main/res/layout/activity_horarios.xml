@@ -2,12 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFFFFF"
-    tools:context=".HorariosActivity">
+    android:background="#FFFFFF">
 
     <!-- ENCABEZADO -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +25,7 @@
             android:contentDescription="Logo UAS"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <!-- Título -->
         <TextView
@@ -44,7 +42,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/relojHora"
             android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp" />
+            android:layout_marginRight="12dp"/>
 
         <!-- Reloj en vivo -->
         <TextView
@@ -58,7 +56,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Icono Usuario -->
         <ImageView
@@ -69,10 +67,11 @@
             android:contentDescription="Icono Usuario"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Botón ATRÁS -->
+    <!-- BOTÓN ATRÁS -->
     <LinearLayout
         android:id="@+id/btnAtras"
         android:layout_width="wrap_content"
@@ -87,7 +86,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/flecha"
-            android:contentDescription="Icono Atrás" />
+            android:contentDescription="Icono Atrás"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,35 +95,43 @@
             android:textColor="#000"
             android:textSize="18sp"
             android:layout_marginStart="8dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
-
-    <!-- Línea divisora -->
+    <!-- DIVISOR -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#D3D3D3" />
+        android:background="#D3D3D3"/>
 
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/horariosRecyclerView"
+    <!-- CONTENIDO PRINCIPAL (lista + botón Excel) -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:clipToPadding="false" />
+        android:layout_weight="1">
 
-    <ImageView
-        android:id="@+id/btnExportarExcel"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:src="@drawable/excel"
-    android:contentDescription="Exportar a Excel"
-    android:clickable="true"
-    android:focusable="true" />
+        <!-- RecyclerView debajo -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/horariosRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false"/>
+
+        <!-- Botón flotante de Excel -->
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnExportarExcel"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_excel"
+            android:contentDescription="Exportar a Excel"/>
+
+
+    </FrameLayout>
 
 
 </LinearLayout>

@@ -1,123 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    card_view:cardElevation="4dp"
-    card_view:cardCornerRadius="12dp"
-    android:background="@android:color/white">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
-        <!-- Fila de encabezados -->
+        <!-- Fila principal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4"
-            android:paddingBottom="8dp">
+            android:gravity="center_vertical"
+            android:paddingBottom="4dp">
 
             <TextView
+                android:id="@+id/txtNombre"
                 android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Profesor"
                 android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#888888"
-                android:gravity="center"/>
+                android:textColor="#000"/>
 
             <TextView
+                android:id="@+id/txtAsignatura"
                 android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Materia"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#888888"
-                android:gravity="center"/>
+                android:textColor="#333"/>
 
             <TextView
+                android:id="@+id/txtGrupo"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="Grupo"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#888888"
-                android:gravity="center"/>
+                android:textColor="#333"/>
 
             <TextView
+                android:id="@+id/txtHorario"
                 android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Horario"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#888888"
-                android:gravity="center"/>
+                android:text="08:00 - 08:40"
+                android:textColor="#333"/>
         </LinearLayout>
 
-        <!-- Línea divisora -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDDDDD"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- Fila de datos del profesor -->
+        <!-- PANEL OPCIONES: SIEMPRE VISIBLE -->
         <LinearLayout
+            android:id="@+id/panelOpciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <CheckBox
+                android:id="@+id/btnFalta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F"/>
+
+            <CheckBox
+                android:id="@+id/btnRetardo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R"
+                android:layout_marginStart="12dp"/>
+
+            <CheckBox
+                android:id="@+id/btnAsistencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:layout_marginStart="12dp"/>
+
+            <!-- Botones de firma, arrancan ocultos -->
+            <ImageButton
+                android:id="@+id/btnFirmarMaestro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_firma_maestro"
+                android:contentDescription="Firmar Maestro"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:layout_marginStart="24dp"/>
+
+            <ImageButton
+                android:id="@+id/btnFirmarJefe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_firma_jefe"
+                android:contentDescription="Firmar Jefe"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:layout_marginStart="12dp"/>
+        </LinearLayout>
+
+        <!-- PANEL OBSERVACIONES (oculto hasta retardo/falta) -->
+        <LinearLayout
+            android:id="@+id/panelObservaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/horario_nombre"
-                android:layout_width="0dp"
+                android:id="@+id/txtTituloObservaciones"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nombre Profesor"
-                android:textSize="16sp"
-                android:textColor="#000"
-                android:gravity="center"/>
+                android:text="Observaciones:"
+                android:textStyle="bold"
+                android:layout_marginBottom="4dp"/>
 
-            <TextView
-                android:id="@+id/horario_asignatura"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/editObservacion"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Materia"
-                android:textSize="16sp"
-                android:textColor="#000"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/horario_grupo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Grupo"
-                android:textSize="16sp"
-                android:textColor="#000"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/horario_hora"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Horario"
-                android:textSize="16sp"
-                android:textColor="#000"
-                android:gravity="center"/>
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:enabled="false"/>
         </LinearLayout>
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
