@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF9FCFD">
+
+    <!-- Encabezado común -->
+    <include layout="@layout/layout_header" />
+
+    <!-- Título de pantalla -->
+    <TextView
+        android:id="@+id/encabezadoProfesores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profesores"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:padding="16dp" />
+
+    <!-- Lista de profesores -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProfesores"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+</LinearLayout>

@@ -19,7 +19,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
 
-        <!-- Pantalla principal -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Horarios -->
+
         <activity
             android:name=".HorariosActivity"
             android:exported="true">
@@ -39,10 +39,13 @@
             </intent-filter>
         </activity>
 
-        <!-- ✅ Nueva actividad agregada -->
         <activity
             android:name=".GruposActivity"
             android:exported="true" />
+
+        <activity android:name=".ProfesoresActivity"
+         android:exported="true" />
+
 
     </application>
 </manifest>

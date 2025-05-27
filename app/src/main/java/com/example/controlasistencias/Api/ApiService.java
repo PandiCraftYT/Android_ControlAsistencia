@@ -2,6 +2,7 @@ package com.example.controlasistencias.Api;
 
 import com.example.controlasistencias.Modelos.Grupo;
 import com.example.controlasistencias.Modelos.Horario;
+import com.example.controlasistencias.Modelos.Profesor;
 
 import java.util.List;
 
@@ -25,6 +26,12 @@ public interface ApiService {
 
     @GET
     Call<List<Grupo>> getGruposPorZona(@Url String url);
+
+    @GET
+    Call<List<Profesor>> getProfesoresPorGrupo(@Url String url);
+
+
+
 
 
 

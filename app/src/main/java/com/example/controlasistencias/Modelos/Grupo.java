@@ -3,14 +3,17 @@ package com.example.controlasistencias.Modelos;
 import com.google.gson.annotations.SerializedName;
 
 public class Grupo {
-    @SerializedName("id")
-    private String id;
+    private int id;
+    private String grado_grupo;
 
-    @SerializedName("grado_grupo")
-    private String gradoGrupo;
+    public int getId() {
+        return id;
+    }
 
-    public String getId() { return id; }
-    public String getGradoGrupo() { return gradoGrupo; }
+    public String getGradoGrupo() {
+        return grado_grupo;
+    }
 }
+
 
 
