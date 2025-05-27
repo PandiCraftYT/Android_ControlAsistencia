@@ -1,7 +1,6 @@
 package com.example.controlasistencias;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable;
     private static final String TAG = "MainActivity";
 
-    private Map<String, String> contraseñasPorZona; // <- Contraseñas diferentes
+    private Map<String, String> contraseñasPorZona;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,37 +53,35 @@ public class MainActivity extends AppCompatActivity {
         zonasRecyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columnas
 
         iniciarRelojEnVivo();
-        inicializarContraseñas(); // Importantísimo
+        inicializarContraseñas();
 
         Log.d(TAG, "Iniciando solicitud a la API para obtener zonas.");
 
-        RetrofitClient.getInstance().create(ApiService.class).getZonas().enqueue(new Callback<List<String>>() {
+        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+
+        apiService.getZonas().enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                Log.d(TAG, "Código de respuesta de la API: " + response.code());
-
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<String> zonas = response.body();
-                    Log.d(TAG, "Respuesta exitosa: " + zonas);
 
-                    if (zonas != null) {
-                        zonaAdapter = new ZonaAdapter(MainActivity.this, zonas, zonaSeleccionada -> {
-                            solicitarContraseña(zonaSeleccionada);
-                        });
-                        zonasRecyclerView.setAdapter(zonaAdapter);
-                    } else {
-                        Log.d(TAG, "La respuesta está vacía (zonas es null).");
-                    }
+                    zonaAdapter = new ZonaAdapter(MainActivity.this, zonas, zonaSeleccionada -> {
+                        solicitarContraseña(zonaSeleccionada);
+                    });
+
+                    zonasRecyclerView.setAdapter(zonaAdapter);
                 } else {
-                    Log.e(TAG, "Error al obtener zonas: Código de respuesta no exitoso: " + response.code());
+                    Toast.makeText(MainActivity.this, "Error en la respuesta", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
-                Log.e(TAG, "Error al obtener zonas: " + t.getMessage());
+                Toast.makeText(MainActivity.this, "Fallo en conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+
     }
 
     private void iniciarRelojEnVivo() {
@@ -107,13 +104,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void inicializarContraseñas() {
         contraseñasPorZona = new HashMap<>();
-        contraseñasPorZona.put("Gallinero", "1234");
+        contraseñasPorZona.put("Departamentos", "1234");
         contraseñasPorZona.put("Edificio 1", "abcd");
         contraseñasPorZona.put("Edificio 2", "2222");
         contraseñasPorZona.put("Edificio 3", "3333");
         contraseñasPorZona.put("Edificio 4", "4444");
         contraseñasPorZona.put("Sotano", "5555");
-        // Puedes agregar más zonas si quieres
     }
 
     private void solicitarContraseña(String zonaSeleccionada) {
@@ -131,10 +127,15 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Ingresar", (dialog, which) -> {
             String contraseñaIngresada = input.getText().toString().trim();
             if (verificarContraseña(zonaSeleccionada, contraseñaIngresada)) {
-                // Si la contraseña es correcta
-                Intent intent = new Intent(MainActivity.this, HorariosActivity.class);
-                intent.putExtra("zona", zonaSeleccionada);
-                startActivity(intent);
+                int zonaId = obtenerIdZonaDesdeNombre(zonaSeleccionada);
+                if (zonaId != -1) {
+                    Intent intent = new Intent(MainActivity.this, com.example.controlasistencias.GruposActivity.class);
+                    intent.putExtra("zonaNombre", zonaSeleccionada);
+
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Zona no reconocida.", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(MainActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
             }
@@ -152,5 +153,17 @@ public class MainActivity extends AppCompatActivity {
     private boolean verificarContraseña(String zona, String contraseñaIngresada) {
         String contraseñaCorrecta = contraseñasPorZona.get(zona);
         return contraseñaCorrecta != null && contraseñaCorrecta.equals(contraseñaIngresada);
+    }
+
+    private int obtenerIdZonaDesdeNombre(String zonaNombre) {
+        switch (zonaNombre.toLowerCase()) {
+            case "departamentos": return 1;
+            case "edificio 1": return 2;
+            case "edificio 2": return 3;
+            case "edificio 3": return 4;
+            case "edificio 4": return 5;
+            case "sotano": return 6;
+            default: return -1;
+        }
     }
 }

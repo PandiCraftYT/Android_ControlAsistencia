@@ -79,42 +79,19 @@ public class HorariosActivity extends AppCompatActivity {
 
         // 6) Petición de datos
         String zona = getIntent().getStringExtra("zona");
-        RetrofitClient.getInstance()
-                .create(ApiService.class)
-                .getHorariosPorZona(zona)
-                .enqueue(new Callback<List<Horario>>() {
-                    @Override
-                    public void onResponse(Call<List<Horario>> call, Response<List<Horario>> response) {
-                        if (!response.isSuccessful() || response.body() == null) {
-                            Toast.makeText(HorariosActivity.this,
-                                    "Error al obtener horarios", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
 
-                        List<Horario> lista = filtrarHorariosDelDia(response.body());
+        apiService.getHorariosPorZona(zona).enqueue(new Callback<List<Horario>>() {
+            @Override
+            public void onResponse(Call<List<Horario>> call, Response<List<Horario>> response) {
+                // tu código aquí
+            }
 
-                        adapter = new HorariosAdapter(lista, diaActual, HorariosActivity.this);
-
-                        // 6.1) Restaurar selección tras rotación
-                        if (savedInstanceState != null) {
-                            int pos = savedInstanceState.getInt(KEY_POS, -1);
-                            String est = savedInstanceState.getString(KEY_EST, "");
-                            adapter.setSelection(pos, est);
-                        }
-
-                        horariosRecyclerView.setAdapter(adapter);
-
-                        // 6.2) Exportar
-                        btnExportar.setOnClickListener(v -> exportarHorariosAExcel(lista));
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Horario>> call, Throwable t) {
-                        Toast.makeText(HorariosActivity.this,
-                                "Error de conexión: " + t.getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onFailure(Call<List<Horario>> call, Throwable t) {
+                // tu código aquí
+            }
+        });
     }
 
     /** Actualiza el reloj cada segundo */
