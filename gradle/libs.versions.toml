@@ -1,5 +1,6 @@
 [versions]
-agp = "8.10.0"
+agp = "8.10.1"
+core = "3.4.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -11,9 +12,11 @@ constraintlayout = "2.1.4"
 retrofit = "2.9.0"
 recyclerview = "1.4.0"
 poi = "5.2.3"
+zxingAndroidEmbedded = "4.3.0"
 
 [libraries]
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.1.4" }
+core = { module = "com.google.zxing:core", version.ref = "core" }
 poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version.ref = "poi" }
 poi = { group = "org.apache.poi", name = "poi", version.ref = "poi" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
@@ -26,6 +29,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

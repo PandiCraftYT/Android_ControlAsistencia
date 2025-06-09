@@ -1,5 +1,6 @@
 package com.example.controlasistencias.Api;
 
+import com.example.controlasistencias.Modelos.Asistencia;
 import com.example.controlasistencias.Modelos.Grupo;
 import com.example.controlasistencias.Modelos.Horario;
 import com.example.controlasistencias.Modelos.Profesor;
@@ -7,7 +8,9 @@ import com.example.controlasistencias.Modelos.Profesor;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Url;
 
@@ -30,7 +33,8 @@ public interface ApiService {
     @GET
     Call<List<Profesor>> getProfesoresPorGrupo(@Url String url);
 
-
+    @POST("/api/asistencias/registrar")
+    Call<Void> registrarAsistencia(@Body Asistencia asistencia);
 
 
 
