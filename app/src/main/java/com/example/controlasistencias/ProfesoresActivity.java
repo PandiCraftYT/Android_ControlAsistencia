@@ -110,33 +110,46 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
     }
 
     private void procesarQR(String contenidoQR) {
-        Toast.makeText(this, "🔍 procesarQR() llamado", Toast.LENGTH_SHORT).show();
+        // Marcar inicio
+        Log.d("QR_DEBUG", "🔍 procesarQR() llamado");
         Log.d("QR_DEBUG", "📲 Escaneado: " + contenidoQR);
 
+        // Comprobar que tenemos tipo y profesor
         if (tipoAsistencia == null || profesorSeleccionado == null) {
-            Toast.makeText(this, "⚠️ tipoAsistencia o profesorSeleccionado es null", Toast.LENGTH_LONG).show();
-            Log.e("QR_DEBUG", "tipoAsistencia = " + tipoAsistencia + ", profesorSeleccionado = " + profesorSeleccionado);
+            Log.e("QR_DEBUG", "⚠ tipoAsistencia o profesorSeleccionado es null: "
+                    + "tipoAsistencia=" + tipoAsistencia
+                    + ", profesorSeleccionado=" + profesorSeleccionado);
+            Toast.makeText(this, "⚠ Datos incompletos para procesar QR", Toast.LENGTH_LONG).show();
             return;
         }
 
         try {
             String cuentaEscaneada = contenidoQR.trim();
-            String hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+            Log.d("QR_DEBUG", "🔍 cuentaEscaneada: " + cuentaEscaneada);
 
-            Log.d("QR_DEBUG", "Cuenta escaneada = " + cuentaEscaneada);
+            String hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                    .format(new Date());
+            Log.d("QR_DEBUG", "⏰ hora: " + hora);
+
             String cuentaProfesor = profesorSeleccionado.getNumeroCuenta();
+            Log.d("QR_DEBUG", "👨‍🏫 cuentaProfesor: " + cuentaProfesor);
 
             if (cuentaProfesor == null) {
-                Toast.makeText(this, "❌ El profesor no tiene número de cuenta asignado", Toast.LENGTH_LONG).show();
-                Log.e("QR_DEBUG", "cuentaProfesor = null");
+                Log.e("QR_DEBUG", "❌ Profesor sin número de cuenta");
+                Toast.makeText(this, "Profesor sin número de cuenta", Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (tipoAsistencia.equalsIgnoreCase("ASISTENCIA") || tipoAsistencia.equalsIgnoreCase("RETARDO")) {
-                if (cuentaProfesor.equalsIgnoreCase(cuentaEscaneada)) {
-                    Toast.makeText(this, "✅ Profesor verificado", Toast.LENGTH_SHORT).show();
-                    String observacion = tipoAsistencia.equalsIgnoreCase("RETARDO") ? "Hora entrada: " + hora : "";
+            // ASISTENCIA / RETARDO
+            if (tipoAsistencia.equalsIgnoreCase("ASISTENCIA")
+                    || tipoAsistencia.equalsIgnoreCase("RETARDO")) {
 
+                Log.d("QR_DEBUG", "📌 tipoAsistencia: " + tipoAsistencia);
+                if (cuentaProfesor.equalsIgnoreCase(cuentaEscaneada)) {
+                    Log.d("QR_DEBUG", "✅ Profesor verificado");
+                    String observacion = tipoAsistencia.equalsIgnoreCase("RETARDO")
+                            ? "Hora entrada: " + hora
+                            : "";
                     registrarAsistenciaLocal(
                             tipoAsistencia,
                             profesorSeleccionado,
@@ -147,34 +160,90 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
                             null
                     );
                 } else {
-                    Toast.makeText(this, "❌ QR inválido, no coincide con el profesor", Toast.LENGTH_LONG).show();
+                    Log.w("QR_DEBUG", "❌ QR no coincide con el profesor");
+                    Toast.makeText(this,
+                            "❌ QR inválido para este profesor", Toast.LENGTH_LONG).show();
                 }
 
+                // FALTA → validar Jefe de Grupo
             } else if (tipoAsistencia.equalsIgnoreCase("FALTA")) {
-                if (cuentaEscaneada.startsWith("JG")) {
-                    Toast.makeText(this, "✅ Jefe de grupo verificado", Toast.LENGTH_SHORT).show();
-                    registrarAsistenciaLocal(
-                            tipoAsistencia,
-                            profesorSeleccionado,
-                            grupoId,
-                            hora,
-                            campoObservacion != null ? campoObservacion.getText().toString() : "",
-                            null,
-                            cuentaEscaneada
-                    );
-                } else {
-                    Toast.makeText(this, "❌ Este QR no es del jefe de grupo", Toast.LENGTH_LONG).show();
-                }
+                Log.d("QR_DEBUG", "📌 tipoAsistencia: FALTA");
+                Log.d("QR_DEBUG", "🔍 Validando Jefe de Grupo en grupoId=" + grupoId);
+
+                ApiService api = RetrofitClient
+                        .getInstance()
+                        .create(ApiService.class);
+
+                Call<List<String>> call = api.getJefesGrupoPorGrupo(grupoId);
+
+                // Comprueba la URL que realmente está usando OkHttp
+                Log.d("QR_DEBUG", "🌐 URL petición (okhttp): "
+                        + call.request().url().toString());
+
+                // Lanza la petición
+                call.enqueue(new Callback<List<String>>() {
+                    @Override
+                    public void onResponse(Call<List<String>> call,
+                                           Response<List<String>> response) {
+                        Log.d("QR_DEBUG", "📡 Código HTTP jefesGrupo: "
+                                + response.code());
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<String> cuentasJefe = response.body();
+                            Log.d("QR_DEBUG", "👥 cuentasJefeGrupo: " + cuentasJefe);
+
+                            if (cuentasJefe.contains(cuentaEscaneada)) {
+                                Log.d("QR_DEBUG", "✅ QR validado como Jefe de Grupo");
+                                registrarAsistenciaLocal(
+                                        tipoAsistencia,
+                                        profesorSeleccionado,
+                                        grupoId,
+                                        hora,
+                                        campoObservacion != null
+                                                ? campoObservacion.getText().toString()
+                                                : "",
+                                        null,
+                                        cuentaEscaneada
+                                );
+                            } else {
+                                Log.w("QR_DEBUG", "❌ QR no es de Jefe de Grupo");
+                                Toast.makeText(ProfesoresActivity.this,
+                                        "❌ Este QR no es del Jefe de Grupo",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Log.e("QR_DEBUG", "⚠ Respuesta inválida o body nulo");
+                            Toast.makeText(ProfesoresActivity.this,
+                                    "⚠ No se pudo validar Jefe de Grupo",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        Log.d("QR_DEBUG", "🏁 Fin del proceso QR (onResponse)");
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<String>> call, Throwable t) {
+                        Log.e("QR_DEBUG", "❌ Error de conexión: " + t.getMessage());
+                        Toast.makeText(ProfesoresActivity.this,
+                                "❌ Error de conexión con backend",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("QR_DEBUG", "🏁 Fin del proceso QR (onFailure)");
+                    }
+                });
+
             } else {
-                Toast.makeText(this, "⚠ Tipo de asistencia desconocido: " + tipoAsistencia, Toast.LENGTH_SHORT).show();
+                Log.w("QR_DEBUG", "⚠ Tipo de asistencia desconocido: "
+                        + tipoAsistencia);
+                Toast.makeText(this,
+                        "⚠ Tipo de asistencia desconocido: " + tipoAsistencia,
+                        Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
-            Toast.makeText(this, "❌ Error procesando QR: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e("QR_ERROR", "Excepción capturada", e);
+            Log.e("QR_ERROR", "💥 Excepción procesando QR", e);
+            Toast.makeText(this,
+                    "❌ Error procesando QR: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
         }
-
-        Toast.makeText(this, "✅ Fin del proceso QR", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -187,16 +256,14 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
         String horaActual = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
         Asistencia nuevaAsistencia = new Asistencia(
-                profesor.getHorarioId(), // ← este también asegúrate de que esté seteado
+                profesor.getHorarioId(),
                 tipoAsistencia,
-                profesor.getNumeroCuenta(), // firma_maestro
-                null,                       // firma_jefe_grupo
-                "",                         // observación
+                profesor.getNumeroCuenta(),  // usa el valor que te llegó de la lectura QR
+                firmaJefeGrupo,  // idem
+                observacion,
                 profesor.getId(),
                 profesor.getNumeroCuenta(),
-                horaActual
-        );
-
+                horaActual);
 
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
         Log.d("ASISTENCIA_DEBUG", "Datos:");

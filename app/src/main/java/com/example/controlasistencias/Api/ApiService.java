@@ -36,6 +36,9 @@ public interface ApiService {
     @POST("/api/asistencias/registrar")
     Call<Void> registrarAsistencia(@Body Asistencia asistencia);
 
+    @GET("jefesgrupo/porGrupo/{grupoId}")
+    Call<List<String>> getJefesGrupoPorGrupo(@Path("grupoId") int grupoId);
+
 
 
 
