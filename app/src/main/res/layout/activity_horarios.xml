@@ -58,17 +58,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Icono Usuario -->
-        <ImageView
-            android:id="@+id/iconoUsuario"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/usuario"
-            android:contentDescription="Icono Usuario"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- BOTÓN ATRÁS -->
@@ -117,20 +106,6 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:clipToPadding="false"/>
-
-        <!-- Botón flotante de Excel -->
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btnExportarExcel"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:padding="12dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/excel"
-            android:contentDescription="Exportar a Excel"/>
-
-
     </FrameLayout>
 
 

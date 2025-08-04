@@ -194,18 +194,23 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
 
                             if (cuentasJefe.contains(cuentaEscaneada)) {
                                 Log.d("QR_DEBUG", "✅ QR validado como Jefe de Grupo");
+
+                                String horaActual = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                                        .format(new Date());
+
+                                String observacionGenerada = "Falta registrada por: " + cuentaEscaneada + " a la hora: " + horaActual;
+
                                 registrarAsistenciaLocal(
                                         tipoAsistencia,
                                         profesorSeleccionado,
                                         grupoId,
-                                        hora,
-                                        campoObservacion != null
-                                                ? campoObservacion.getText().toString()
-                                                : "",
+                                        horaActual,
+                                        observacionGenerada,
                                         null,
                                         cuentaEscaneada
                                 );
-                            } else {
+                            }
+                            else {
                                 Log.w("QR_DEBUG", "❌ QR no es de Jefe de Grupo");
                                 Toast.makeText(ProfesoresActivity.this,
                                         "❌ Este QR no es del Jefe de Grupo",
@@ -253,7 +258,11 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
                                           String firmaMaestro, String firmaJefeGrupo) {
         Log.d("ASISTENCIA_DEBUG", "cuenta_empleado: " + profesor.getNumeroCuenta());
 
-        String horaActual = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/Mazatlan")); // Zona horaria correcta
+        String horaActual = sdf.format(new Date());
+
+
 
         Asistencia nuevaAsistencia = new Asistencia(
                 profesor.getHorarioId(),
@@ -324,7 +333,9 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
 
     private void iniciarReloj() {
         relojRunnable = () -> {
-            String horaActual = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/Mazatlan"));
+            String horaActual = sdf.format(new Date());
             relojHora.setText(horaActual);
             handler.postDelayed(relojRunnable, 1000);
         };

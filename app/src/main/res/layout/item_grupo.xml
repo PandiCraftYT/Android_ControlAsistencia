@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="8dp"
     android:layout_margin="8dp"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    android:backgroundTint="#FFFFFF"> <!-- fondo blanco -->
 
     <TextView
         android:id="@+id/textViewGrupo"
