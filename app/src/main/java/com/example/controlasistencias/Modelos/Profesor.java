@@ -35,6 +35,12 @@ public class Profesor {
     public String getNumeroCuenta() {
         return numeroCuenta;
     }
+    @SerializedName("materia")
+    private String materia;
+
+    public String getMateria() {
+        return materia;
+    }
 
     @SerializedName("lunes")
     private String lunes;

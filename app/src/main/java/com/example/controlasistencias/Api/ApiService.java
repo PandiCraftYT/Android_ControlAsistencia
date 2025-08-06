@@ -39,6 +39,8 @@ public interface ApiService {
     @GET("jefesgrupo/porGrupo/{grupoId}")
     Call<List<String>> getJefesGrupoPorGrupo(@Path("grupoId") int grupoId);
 
+    @GET("api/asistencias/porGrupo/{grupoId}")
+    Call<List<Asistencia>> getAsistenciasPorGrupo(@Path("grupoId") int grupoId);
 
 
 

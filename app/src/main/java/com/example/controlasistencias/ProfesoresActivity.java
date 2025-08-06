@@ -62,11 +62,11 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
         recyclerProfesores = findViewById(R.id.recyclerProfesores);
         recyclerProfesores.setLayoutManager(new LinearLayoutManager(this));
 
-        iniciarReloj();
+        iniciarReloj(); // para actualizar el reloj visible
 
         grupoId = getIntent().getIntExtra("grupoId", -1);
         if (grupoId != -1) {
-            obtenerProfesoresPorGrupo(grupoId);
+            obtenerProfesoresPorGrupo(grupoId); // ⚠️ AQUI es donde debes inicializar el adapter después
         } else {
             Toast.makeText(this, "Datos de grupo no recibidos", Toast.LENGTH_LONG).show();
         }
@@ -83,7 +83,10 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
                     }
                 }
         );
+
+        // ❌ Aquí NO pongas adapter.iniciarActualizacionPeriodica(); porque aún no existe
     }
+
 
     @Override
     public void onScanRequested(Profesor profesor, String tipoAsistencia, EditText campoObservacion) {
@@ -325,8 +328,6 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
                 if (response.isSuccessful() && response.body() != null) {
                     List<Profesor> profesores = response.body();
 
-                    Log.d("PROFESORES_API", "Total recibidos: " + profesores.size());
-
                     // Mostrar nombres recibidos
                     for (Profesor prof : profesores) {
                         Log.d("PROFESORES_API", "-> " + prof.getNombre());
@@ -337,6 +338,8 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
                         profesorAdapter = new ProfesorAdapter(ProfesoresActivity.this, profesores, ProfesoresActivity.this);
                         recyclerProfesores.setAdapter(profesorAdapter);
                         profesorAdapter.notifyDataSetChanged();
+                        // ✅ Iniciar actualización periódica cada minuto
+                        profesorAdapter.iniciarActualizacionPeriodica();
                     });
 
                 } else {
@@ -350,8 +353,6 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
             }
         });
     }
-
-
 
     private void iniciarReloj() {
         relojRunnable = () -> {
