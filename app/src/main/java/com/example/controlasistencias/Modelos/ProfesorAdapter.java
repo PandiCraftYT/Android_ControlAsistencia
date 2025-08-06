@@ -316,17 +316,6 @@ public class ProfesorAdapter extends RecyclerView.Adapter<ProfesorAdapter.ViewHo
             // ✅ Validación exitosa
             listener.onScanRequested(profesor, tipoSeleccionado, holder.editObservaciones);
         });
-// ✅ Guardar como ya escaneado
-        profesoresEscaneados.add(profesor.getId());
-
-// ✅ Desactivar elementos visuales
-        holder.btnScan.setEnabled(false);
-        holder.itemView.setAlpha(0.5f);
-        holder.radioGroup.setEnabled(false);
-        holder.radioAsistencia.setEnabled(false);
-        holder.radioRetardo.setEnabled(false);
-        holder.radioFalta.setEnabled(false);
-        holder.editObservaciones.setEnabled(false);
 
     }
 

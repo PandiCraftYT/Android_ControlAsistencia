@@ -1,7 +1,5 @@
 package com.example.controlasistencias.Modelos;
-
 import com.google.gson.annotations.SerializedName;
-
 public class Asistencia {
 
     @SerializedName("horario_id")
@@ -27,11 +25,11 @@ public class Asistencia {
 
     @SerializedName("hora_registro")
     private String hora_registro;
-
     @SerializedName("fecha")
-    private String fecha;
+    private String fecha; // formato esperado: "2025-06-09"
+
     public int getProfesorId() {
-        return profesor_id;
+        return profesor_id; // ← este es el correcto
     }
 
     public Asistencia(int horario_id, String estatus, String firma_maestro,
@@ -43,8 +41,11 @@ public class Asistencia {
         this.firma_maestro = firma_maestro;
         this.firma_jefe_grupo = firma_jefe_grupo;
         this.observacion = observacion;
+        this.fecha = fecha;
         this.profesor_id = profesor_id;
         this.cuenta_empleado = cuenta_empleado;
         this.hora_registro = hora_registro;
     }
+
+    // Getters (opcional si no los usas)
 }
