@@ -35,4 +35,54 @@ public class Profesor {
     public String getNumeroCuenta() {
         return numeroCuenta;
     }
+
+    @SerializedName("lunes")
+    private String lunes;
+
+    @SerializedName("martes")
+    private String martes;
+
+    @SerializedName("miercoles")
+    private String miercoles;
+
+    @SerializedName("jueves")
+    private String jueves;
+
+    @SerializedName("viernes")
+    private String viernes;
+
+    public String getLunes() {
+        return lunes;
+    }
+
+    public String getMartes() {
+        return martes;
+    }
+
+    public String getMiercoles() {
+        return miercoles;
+    }
+
+    public String getJueves() {
+        return jueves;
+    }
+
+    public String getViernes() {
+        return viernes;
+    }
+    @SerializedName("dia")
+    private String dia;
+
+    @SerializedName("hora_inicio")
+    private String horaInicio;
+
+    @SerializedName("hora_fin")
+    private String horaFin;
+
+    public String getDia() { return dia; }
+
+    public String getHoraInicio() { return horaInicio; }
+
+    public String getHoraFin() { return horaFin; }
+
 }

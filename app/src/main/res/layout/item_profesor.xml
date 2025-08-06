@@ -1,75 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="8dp"
-    android:padding="12dp"
-    android:background="@drawable/bg_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    android:background="@android:color/white">
 
-    <!-- Nombre del profesor -->
-    <TextView
-        android:id="@+id/textNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nombre del Profesor"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-
-    <!-- Contenedor expandible -->
     <LinearLayout
-        android:id="@+id/layoutExpandable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
         android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <!-- Opciones -->
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioAsistencia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Asistencia" />
-
-            <RadioButton
-                android:id="@+id/radioRetardo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Retardo" />
-
-            <RadioButton
-                android:id="@+id/radioFalta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Falta" />
-        </RadioGroup>
-
-        <!-- Observaciones -->
-        <EditText
-            android:id="@+id/editObservaciones"
+        <!-- Nombre del profesor -->
+        <TextView
+            android:id="@+id/textNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Observaciones"
-            android:visibility="gone"
-            android:inputType="textMultiLine"
-            android:minLines="2"
-            android:background="@drawable/uasfondo" />
+            android:text="Nombre del Profesor"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:padding="8dp" />
 
-        <!-- Botón de escanear QR -->
-        <Button
-            android:id="@+id/btnScan"
-            android:layout_width="wrap_content"
+        <!-- Contenedor expandible -->
+        <LinearLayout
+            android:id="@+id/layoutExpandable"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Escanear QR"
-            android:enabled="false"
-            android:layout_marginTop="8dp" />
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <!-- Opciones -->
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioAsistencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Asistencia" />
+
+                <RadioButton
+                    android:id="@+id/radioRetardo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Retardo" />
+
+                <RadioButton
+                    android:id="@+id/radioFalta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Falta" />
+            </RadioGroup>
+
+            <!-- Observaciones -->
+            <EditText
+                android:id="@+id/editObservaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Observaciones"
+                android:visibility="gone"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:background="@android:color/darker_gray"
+                android:padding="8dp" />
+
+            <!-- Botón de escanear QR -->
+            <Button
+                android:id="@+id/btnScan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Escanear QR"
+                android:enabled="false"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

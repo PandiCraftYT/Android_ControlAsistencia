@@ -53,7 +53,7 @@ public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
                 holder.imagenZona.setImageResource(R.drawable.edificio2);
                 break;
             case "edificio 3":
-                holder.imagenZona.setImageResource(R.drawable.edicio3);
+                holder.imagenZona.setImageResource(R.drawable.edificio3);
                 break;
             case "edificio 4":
                 holder.imagenZona.setImageResource(R.drawable.edificio4);

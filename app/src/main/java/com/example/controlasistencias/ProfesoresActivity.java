@@ -23,6 +23,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -307,6 +308,12 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
             }
         });
     }
+    private String obtenerDiaActual() {
+        Calendar calendar = Calendar.getInstance();
+        String[] dias = {"domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"};
+        int dia = calendar.get(Calendar.DAY_OF_WEEK); // 1 = domingo
+        return dias[dia - 1];
+    }
 
     private void obtenerProfesoresPorGrupo(int grupoId) {
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
@@ -317,8 +324,21 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
             public void onResponse(Call<List<Profesor>> call, Response<List<Profesor>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Profesor> profesores = response.body();
-                    profesorAdapter = new ProfesorAdapter(ProfesoresActivity.this, profesores, ProfesoresActivity.this);
-                    recyclerProfesores.setAdapter(profesorAdapter);
+
+                    Log.d("PROFESORES_API", "Total recibidos: " + profesores.size());
+
+                    // Mostrar nombres recibidos
+                    for (Profesor prof : profesores) {
+                        Log.d("PROFESORES_API", "-> " + prof.getNombre());
+                    }
+
+                    // Asignar adapter
+                    runOnUiThread(() -> {
+                        profesorAdapter = new ProfesorAdapter(ProfesoresActivity.this, profesores, ProfesoresActivity.this);
+                        recyclerProfesores.setAdapter(profesorAdapter);
+                        profesorAdapter.notifyDataSetChanged();
+                    });
+
                 } else {
                     Toast.makeText(ProfesoresActivity.this, "Error del servidor: " + response.code(), Toast.LENGTH_LONG).show();
                 }
@@ -330,6 +350,8 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
             }
         });
     }
+
+
 
     private void iniciarReloj() {
         relojRunnable = () -> {
