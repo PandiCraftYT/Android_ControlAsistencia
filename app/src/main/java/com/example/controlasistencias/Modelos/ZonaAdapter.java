@@ -43,8 +43,8 @@ public class ZonaAdapter extends RecyclerView.Adapter<ZonaAdapter.ViewHolder> {
         holder.nombreZona.setText(zona);
 
         switch (zona.toLowerCase()) {
-            case "departamentos":
-                holder.imagenZona.setImageResource(R.drawable.departamento);
+            case "departamento":
+                holder.imagenZona.setImageResource(R.drawable.departamentos);
                 break;
             case "edificio 1":
                 holder.imagenZona.setImageResource(R.drawable.edificio1);
