@@ -76,7 +76,7 @@ public class GruposActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         List<Grupo> grupos = response.body();
                         if (!grupos.isEmpty()) {
-                            grupoAdapter = new GrupoAdapter(GruposActivity.this, grupos);
+                            grupoAdapter = new GrupoAdapter(GruposActivity.this, grupos,zonaNombre);
                             recyclerGrupos.setAdapter(grupoAdapter);
                         } else {
                             Toast.makeText(GruposActivity.this, "No hay grupos en esta zona", Toast.LENGTH_SHORT).show();

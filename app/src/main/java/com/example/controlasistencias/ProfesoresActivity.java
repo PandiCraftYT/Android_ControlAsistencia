@@ -57,13 +57,19 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profesores);
-
+        // ✅ Referencias a los nuevos TextView
+        TextView txtZona = findViewById(R.id.txtZona);
+        TextView txtGrupo = findViewById(R.id.txtGrupo);
         relojHora = findViewById(R.id.relojHora);
         recyclerProfesores = findViewById(R.id.recyclerProfesores);
         recyclerProfesores.setLayoutManager(new LinearLayoutManager(this));
 
         iniciarReloj(); // para actualizar el reloj visible
-
+        String zonaNombre = getIntent().getStringExtra("zonaNombre");
+        String grupoNombre = getIntent().getStringExtra("grupoNombre");
+        // ✅ Mostrar en pantalla
+        if (zonaNombre != null) txtZona.setText("Horarios - Zona: " + zonaNombre);
+        if (grupoNombre != null) txtGrupo.setText("Grupo: " + grupoNombre);
         grupoId = getIntent().getIntExtra("grupoId", -1);
         if (grupoId != -1) {
             obtenerProfesoresPorGrupo(grupoId); // ⚠️ AQUI es donde debes inicializar el adapter después
@@ -114,10 +120,6 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
     }
 
     private void procesarQR(String contenidoQR) {
-        // Marcar inicio
-        Log.d("QR_DEBUG", "🔍 procesarQR() llamado");
-        Log.d("QR_DEBUG", "📲 Escaneado: " + contenidoQR);
-
         // Comprobar que tenemos tipo y profesor
         if (tipoAsistencia == null || profesorSeleccionado == null) {
             Log.e("QR_DEBUG", "⚠ tipoAsistencia o profesorSeleccionado es null: "

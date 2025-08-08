@@ -10,8 +10,8 @@
         android:orientation="vertical"
         android:padding="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
         <!-- Nombre del profesor -->
         <TextView
             android:id="@+id/textNombre"

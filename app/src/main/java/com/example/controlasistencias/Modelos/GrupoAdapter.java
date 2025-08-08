@@ -19,10 +19,11 @@ public class GrupoAdapter extends RecyclerView.Adapter<GrupoAdapter.ViewHolder> 
 
     private Context context;
     private List<Grupo> listaGrupos;
-
-    public GrupoAdapter(Context context, List<Grupo> listaGrupos) {
+    private String zonaNombre;
+    public GrupoAdapter(Context context, List<Grupo> listaGrupos, String zonaNombre) {
         this.context = context;
         this.listaGrupos = listaGrupos;
+        this.zonaNombre = zonaNombre;
     }
 
     @NonNull
@@ -40,7 +41,9 @@ public class GrupoAdapter extends RecyclerView.Adapter<GrupoAdapter.ViewHolder> 
         // ✅ Aquí es donde se manda el grupoId
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProfesoresActivity.class);
-            intent.putExtra("grupoId", grupo.getId()); // 👈 Asegúrate de que grupo.getId() sea un INT válido
+            intent.putExtra("grupoId", grupo.getId());
+            intent.putExtra("zonaNombre", zonaNombre); // viene de fuera
+            intent.putExtra("grupoNombre", grupo.getGradoGrupo());
             context.startActivity(intent);
         });
     }
@@ -57,5 +60,6 @@ public class GrupoAdapter extends RecyclerView.Adapter<GrupoAdapter.ViewHolder> 
             super(itemView);
             textGrupo = itemView.findViewById(R.id.textViewGrupo); // 👈 Asegúrate que el ID exista en item_grupo.xml
         }
+
     }
 }

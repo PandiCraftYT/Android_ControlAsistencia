@@ -8,6 +8,34 @@
     <!-- Encabezado común -->
     <include layout="@layout/layout_header" />
 
+    <!-- Zona y Grupo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:id="@+id/txtZona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Horarios - Zona: --"
+            android:textStyle="bold"
+            android:textSize="20sp"
+        android:layout_marginEnd="32dp"
+        android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/txtGrupo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grupo: --"
+            android:textStyle="bold"
+            android:textSize="20sp"
+        android:textColor="#333333" />
+    </LinearLayout>
+
     <!-- Lista de profesores -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProfesores"
