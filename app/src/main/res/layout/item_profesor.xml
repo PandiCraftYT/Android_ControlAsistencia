@@ -66,15 +66,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:visibility="visible"> <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Marcar Estatus:"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="#888888"
-            android:textAllCaps="true"
-            android:layout_marginBottom="8dp"/>
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marcar Estatus:"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#888888"
+                android:textAllCaps="true"
+                android:layout_marginBottom="8dp"/>
 
             <RadioGroup
                 android:id="@+id/radioGroup"
@@ -90,21 +92,29 @@
                     android:layout_weight="1"
                     android:text="Asist."
                     android:textSize="12sp"
-                    android:buttonTint="#2ECC71"/> <RadioButton
-                android:id="@+id/radioRetardo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Retar."
-                android:textSize="12sp"
-                android:buttonTint="#F1C40F"/> <RadioButton
-                android:id="@+id/radioFalta"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Falta"
-                android:textSize="12sp"
-                android:buttonTint="#E74C3C"/> </RadioGroup>
+                    android:textColor="#333333"
+                    android:buttonTint="#2ECC71"/>
+
+                <RadioButton
+                    android:id="@+id/radioRetardo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Retar."
+                    android:textSize="12sp"
+                    android:textColor="#333333"
+                    android:buttonTint="#F1C40F"/>
+
+                <RadioButton
+                    android:id="@+id/radioFalta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Falta"
+                    android:textSize="12sp"
+                    android:textColor="#333333"
+                    android:buttonTint="#E74C3C"/>
+            </RadioGroup>
 
             <EditText
                 android:id="@+id/editObservaciones"

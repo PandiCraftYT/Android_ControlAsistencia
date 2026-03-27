@@ -1,12 +1,11 @@
 package com.example.controlasistencias;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.InputType;
 import android.util.Log;
-import android.widget.EditText;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +18,8 @@ import com.example.controlasistencias.Api.ApiService;
 import com.example.controlasistencias.Api.RetrofitClient;
 import com.example.controlasistencias.Modelos.GruposActivity;
 import com.example.controlasistencias.Modelos.ZonaAdapter;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Fallo en conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
 
     private void iniciarRelojEnVivo() {
@@ -100,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnable);
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
     }
 
     private void inicializarContraseñas() {
@@ -114,41 +115,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void solicitarContraseña(String zonaSeleccionada) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Acceso restringido");
-        builder.setMessage("Ingresa la contraseña para: " + zonaSeleccionada);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_password, null);
+        TextInputEditText input = view.findViewById(R.id.editTextPassword);
 
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        input.setHint("Contraseña");
-        input.setPadding(40, 30, 40, 30);
-
-        builder.setView(input);
-
-        builder.setPositiveButton("Ingresar", (dialog, which) -> {
-            String contraseñaIngresada = input.getText().toString().trim();
-            if (verificarContraseña(zonaSeleccionada, contraseñaIngresada)) {
-                int zonaId = obtenerIdZonaDesdeNombre(zonaSeleccionada);
-                if (zonaId != -1) {
-                    Intent intent = new Intent(MainActivity.this, GruposActivity.class);
-                    intent.putExtra("zonaNombre", zonaSeleccionada);
-
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, "Zona no reconocida.", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(MainActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.purple_700));
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.black));
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Acceso restringido")
+                .setMessage("Ingresa la contraseña para: " + zonaSeleccionada)
+                .setView(view)
+                .setPositiveButton("Ingresar", (dialog, which) -> {
+                    String contraseñaIngresada = input.getText().toString().trim();
+                    if (verificarContraseña(zonaSeleccionada, contraseñaIngresada)) {
+                        int zonaId = obtenerIdZonaDesdeNombre(zonaSeleccionada);
+                        if (zonaId != -1) {
+                            Intent intent = new Intent(MainActivity.this, GruposActivity.class);
+                            intent.putExtra("zonaNombre", zonaSeleccionada);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(this, "Zona no reconocida.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private boolean verificarContraseña(String zona, String contraseñaIngresada) {

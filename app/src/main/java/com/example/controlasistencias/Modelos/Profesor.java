@@ -17,6 +17,9 @@ public class Profesor {
     @SerializedName("horario_id")
     private int horarioId;
 
+    @SerializedName("zona")
+    private String zona;
+
     public int getHorarioId() {
         return horarioId;
     }
@@ -35,6 +38,11 @@ public class Profesor {
     public String getNumeroCuenta() {
         return numeroCuenta;
     }
+
+    public String getZona() {
+        return zona;
+    }
+
     @SerializedName("materia")
     private String materia;
 
