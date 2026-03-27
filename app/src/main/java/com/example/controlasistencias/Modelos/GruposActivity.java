@@ -1,4 +1,4 @@
-package com.example.controlasistencias;
+package com.example.controlasistencias.Modelos;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlasistencias.Api.ApiService;
 import com.example.controlasistencias.Api.RetrofitClient;
-import com.example.controlasistencias.Modelos.Grupo;
-import com.example.controlasistencias.Modelos.GrupoAdapter;
+import com.example.controlasistencias.R;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,11 +58,9 @@ public class GruposActivity extends AppCompatActivity {
 
     private void obtenerGruposPorZona(String zonaNombre) {
         try {
-            // Codifica el nombre de la zona (espacios, tildes, etc.)
-            String zonaCodificada = URLEncoder.encode(zonaNombre, StandardCharsets.UTF_8.toString());
-            String fullUrl = "http://192.168.100.4:8080/api/grupos/porZona/" + zonaCodificada;
-
-            Log.d("URL_DEBUG", "Llamando a: " + fullUrl);  // VERIFICA en Logcat
+            // Sin codificar, para que Retrofit lo maneje
+            String fullUrl = "https://preparatoria.charlystudio.org/android/grupos/porZona/" + zonaNombre;
+            Log.d("API_GRUPOS", "🚀 Buscando grupos en: " + fullUrl);
 
             ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
             Call<List<Grupo>> call = apiService.getGruposPorZona(fullUrl);
@@ -75,26 +70,33 @@ public class GruposActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Grupo>> call, Response<List<Grupo>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         List<Grupo> grupos = response.body();
+                        Log.d("API_GRUPOS", "✅ Éxito! Recibí " + grupos.size() + " grupos.");
+
                         if (!grupos.isEmpty()) {
-                            grupoAdapter = new GrupoAdapter(GruposActivity.this, grupos,zonaNombre);
+                            // Imprimimos el primer grupo para confirmar que no vienen vacíos
+                            Log.d("API_GRUPOS", "📌 Primer grupo: " + grupos.get(0).getGradoGrupo());
+
+                            grupoAdapter = new GrupoAdapter(GruposActivity.this, grupos, zonaNombre);
                             recyclerGrupos.setAdapter(grupoAdapter);
                         } else {
+                            Log.w("API_GRUPOS", "⚠️ La base de datos no tiene grupos para esta zona.");
                             Toast.makeText(GruposActivity.this, "No hay grupos en esta zona", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Log.e("ERROR_HTTP", "Código: " + response.code());
-                        Toast.makeText(GruposActivity.this, "Error del servidor: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Log.e("API_GRUPOS", "❌ Error del servidor: " + response.code());
+                        Toast.makeText(GruposActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Grupo>> call, Throwable t) {
-                    Toast.makeText(GruposActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.e("API_GRUPOS", "💥 Fallo catastrófico: " + t.getMessage());
+                    Toast.makeText(GruposActivity.this, "Fallo: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 
         } catch (Exception e) {
-            Toast.makeText(this, "Error al codificar zona: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("API_GRUPOS", "💥 Excepción: " + e.getMessage());
         }
     }
 

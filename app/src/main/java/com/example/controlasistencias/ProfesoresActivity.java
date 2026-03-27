@@ -322,7 +322,9 @@ public class ProfesoresActivity extends AppCompatActivity implements ProfesorAda
 
     private void obtenerProfesoresPorGrupo(int grupoId) {
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
-        String url = "http://192.168.100.4:8080/api/profesores/porGrupo/" + grupoId;
+
+        // ✅ AQUÍ ESTÁ EL CAMBIO: Apuntamos directo a Vercel con la ruta 'android'
+        String url = "https://preparatoria.charlystudio.org/android/profesores/porGrupo/" + grupoId;
 
         apiService.getProfesoresPorGrupo(url).enqueue(new Callback<List<Profesor>>() {
             @Override

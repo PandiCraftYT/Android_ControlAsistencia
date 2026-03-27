@@ -5,9 +5,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String BASE_URL = "http://192.168.100.4:8080/api/";
-
-
+    // Asegúrate de que termine en / y llegue solo hasta /api/
+// Quitamos api/ y ponemos android/
+// BIEN: Termina en /android/ y no incluye la ruta específica
+    private static final String BASE_URL = "https://preparatoria.charlystudio.org/android/";
     private static Retrofit retrofit;
 
     public static Retrofit getInstance() {

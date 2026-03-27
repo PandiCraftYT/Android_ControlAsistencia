@@ -12,6 +12,7 @@
 
     <application
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/controlasistencia"
@@ -48,7 +49,7 @@
         </activity>
 
         <activity
-            android:name=".GruposActivity"
+            android:name=".Modelos.GruposActivity"
             android:exported="true" />
 
         <activity android:name=".ProfesoresActivity"

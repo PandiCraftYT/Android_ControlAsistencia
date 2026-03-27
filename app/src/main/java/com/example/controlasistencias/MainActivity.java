@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlasistencias.Api.ApiService;
 import com.example.controlasistencias.Api.RetrofitClient;
+import com.example.controlasistencias.Modelos.GruposActivity;
 import com.example.controlasistencias.Modelos.ZonaAdapter;
 
 import java.text.SimpleDateFormat;
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             if (verificarContraseña(zonaSeleccionada, contraseñaIngresada)) {
                 int zonaId = obtenerIdZonaDesdeNombre(zonaSeleccionada);
                 if (zonaId != -1) {
-                    Intent intent = new Intent(MainActivity.this, com.example.controlasistencias.GruposActivity.class);
+                    Intent intent = new Intent(MainActivity.this, GruposActivity.class);
                     intent.putExtra("zonaNombre", zonaSeleccionada);
 
                     startActivity(intent);
