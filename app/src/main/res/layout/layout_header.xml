@@ -5,61 +5,91 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-    android:padding="0dp"
-    tools:context=".MainActivity">
+    android:background="#FFFFFF">
 
-    <!-- ENCABEZADO -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="#D4AF37" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/encabezadoLayout"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#E0E0E0"
-        android:padding="8dp"
-        android:elevation="4dp">
+        android:layout_height="80dp"
+        android:background="#FFFFFF"
+        android:paddingHorizontal="16dp"
+        android:elevation="8dp">
 
-        <!-- Logo UAS -->
         <ImageView
             android:id="@+id/logoUAS"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/logouas"
             android:contentDescription="Logo UAS"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- Título -->
-        <TextView
-            android:id="@+id/tituloApp"
+        <LinearLayout
+            android:id="@+id/containerTitulos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Control de Asistencia"
-            android:textSize="20sp"
-            android:textColor="#343C6A"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp"
             app:layout_constraintStart_toEndOf="@id/logoUAS"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/relojHora"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_weight="2"/>
+            app:layout_constraintEnd_toStartOf="@id/relojCard">
 
-        <!-- Reloj en vivo -->
-        <TextView
-            android:id="@+id/relojHora"
+            <TextView
+                android:id="@+id/tituloApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UAS"
+                android:textSize="18sp"
+                android:textColor="#003A5D"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Asistencia"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1" />
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/relojCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00:00"
-            android:textSize="22sp"
-            android:textColor="#000"
-            android:textStyle="bold"
+            app:cardBackgroundColor="#003A5D"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/relojHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="00:00:00"
+                android:textSize="16sp"
+                android:fontFamily="monospace"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE" />
+
 </LinearLayout>
