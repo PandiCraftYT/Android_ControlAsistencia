@@ -122,12 +122,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Agregar observación (opcional)..."
+                android:textColor="#333333"
+                android:textColorHint="#757575"
                 android:textSize="14sp"
                 android:inputType="textMultiLine"
                 android:minLines="2"
                 android:gravity="top"
                 android:padding="12dp"
-                android:background="@android:drawable/edit_text"
+                android:background="@drawable/bg_edittext"
                 android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatButton

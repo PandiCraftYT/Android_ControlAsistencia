@@ -17,26 +17,24 @@ import retrofit2.http.Url;
 
 public interface ApiService {
     @GET("zonas")
-    Call<List<String>> getZonas(); // Regresamos a String
+    Call<List<String>> getZonas();
 
-    // 2. Obtener los horarios por zona (Quitamos 'api/' porque ya está en la BASE_URL)
     @GET("horarios/{zona}")
     Call<List<Horario>> getHorariosPorZona(@Path("zona") String zona);
 
     @GET("grupos/{zonaId}")
     Call<List<Grupo>> getGruposPorZona(@Path("zonaId") int zonaId);
 
-    // 3. Registro de asistencia (Quitamos la barra inicial y el 'api/')
     @POST("asistencias/registrar")
     Call<Void> registrarAsistencia(@Body Asistencia asistencia);
 
     @GET("jefesgrupo/porGrupo/{grupoId}")
     Call<List<String>> getJefesGrupoPorGrupo(@Path("grupoId") int grupoId);
 
+    // Ruta corregida para buscar asistencias
     @GET("asistencias/porGrupo/{grupoId}")
     Call<List<Asistencia>> getAsistenciasPorGrupo(@Path("grupoId") int grupoId);
 
-    // Rutas dinámicas (Estas se quedan igual porque reciben la URL completa)
     @GET
     Call<List<Grupo>> getGruposPorZona(@Url String url);
 
