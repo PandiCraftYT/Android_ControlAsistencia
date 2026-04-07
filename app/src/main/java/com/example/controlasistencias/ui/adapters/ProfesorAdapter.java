@@ -1,7 +1,8 @@
-package com.example.controlasistencias.Modelos;
+package com.example.controlasistencias.ui.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,27 +13,21 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.controlasistencias.models.Profesor;
 import com.example.controlasistencias.R;
+import com.example.controlasistencias.Utils.AppUtils;
 
-import java.text.Normalizer;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 
 public class ProfesorAdapter extends RecyclerView.Adapter<ProfesorAdapter.ViewHolder> {
 
@@ -59,15 +54,11 @@ public class ProfesorAdapter extends RecyclerView.Adapter<ProfesorAdapter.ViewHo
         actualizarIndicesActivos();
     }
 
-    /**
-     * Recibe un set de llaves únicas (ej: profesorId + "_" + horarioId) para bloquear.
-     */
     public void setRegistrosBloqueados(Set<String> llaves) {
         this.registrosBloqueados.clear();
         if (llaves != null) {
             this.registrosBloqueados.addAll(llaves);
         }
-        Log.d("ADAPTER", "Bloqueados actualizados: " + (llaves != null ? llaves.toString() : "null"));
         notifyDataSetChanged();
     }
 
@@ -75,9 +66,6 @@ public class ProfesorAdapter extends RecyclerView.Adapter<ProfesorAdapter.ViewHo
         return registrosBloqueados;
     }
 
-    /**
-     * Recibe un set de IDs de horario registrados hoy para bloquear.
-     */
     public void setHorariosRegistradosHoy(Set<Integer> ids) {
         this.horariosRegistradosHoy.clear();
         if (ids != null) {
@@ -116,19 +104,6 @@ public class ProfesorAdapter extends RecyclerView.Adapter<ProfesorAdapter.ViewHo
         return null;
     }
 
-    private String normalizarTexto(String texto) {
-        if (texto == null) return "";
-        String string = Normalizer.normalize(texto, Normalizer.Form.NFD);
-        string = string.replaceAll("[^\\p{ASCII}]", ""); 
-        return string.toLowerCase().trim().replaceAll("\\s+", " ");
-    }
-
-    private String normalizarHora(String hora) {
-        if (hora == null) return "";
-        if (hora.length() > 5) return hora.substring(0, 5);
-        return hora;
-    }
-
     public void iniciarActualizacionPeriodica() {
         refreshRunnable = () -> {
             actualizarIndicesActivos();
@@ -159,21 +134,15 @@ public class ProfesorAdapter extends RecyclerView.Adapter<ProfesorAdapter.ViewHo
         holder.txtHorario.setText("Horario: " + profesor.getHoraInicio() + " - " + profesor.getHoraFin());
         holder.txtMateria.setText("Materia: " + profesor.getMateria());
 
-        // --- ANALISIS DE SEGURIDAD PARA BLOQUEO ---
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        sdf.setTimeZone(TimeZone.getTimeZone("America/Mazatlan"));
-        String hoy = sdf.format(new Date());
-        
-        // Generar llave de identidad: nombre|hora|fecha
-        String llaveIdentidad = normalizarTexto(profesor.getNombre()) + "|" + 
-                               normalizarHora(profesor.getHoraInicio()) + "|" + hoy;
+        String hoy = AppUtils.getFechaHoyMazatlan();
+        String llaveIdentidad = AppUtils.normalizarTexto(profesor.getNombre()) + "|" + 
+                               AppUtils.normalizarHora(profesor.getHoraInicio()) + "|" + hoy;
 
         boolean yaRegistrado = registrosBloqueados.contains(llaveIdentidad) || 
                               horariosRegistradosHoy.contains(profesor.getHorarioId());
         
         boolean estaActivo = indicesActivos.contains(position);
 
-        // RESET UI STATE
         holder.layoutExpandable.setVisibility(View.GONE);
         holder.itemView.setAlpha(1.0f);
         holder.itemView.setEnabled(true);

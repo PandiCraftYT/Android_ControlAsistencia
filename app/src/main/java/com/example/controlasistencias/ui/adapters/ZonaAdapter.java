@@ -1,4 +1,4 @@
-package com.example.controlasistencias.Modelos;
+package com.example.controlasistencias.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

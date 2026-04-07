@@ -1,6 +1,4 @@
-package com.example.controlasistencias.Modelos;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.controlasistencias.models;
 
 public class Grupo {
     private int id;
@@ -13,8 +11,4 @@ public class Grupo {
     public String getGradoGrupo() {
         return grado_grupo;
     }
-
 }
-
-
-

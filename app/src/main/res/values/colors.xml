@@ -2,6 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- UAS Colors -->
+    <color name="uas_blue">#003A5D</color>
+    <color name="uas_gold">#D4AF37</color>
+    <color name="uas_blue_light">#00568C</color>
+    <color name="uas_background">#F4F7F6</color>
+
     <color name="purple_700">#3700B3</color>
     <color name="yellow">#FFFF00</color>
     <color name="red">#FF0000</color>

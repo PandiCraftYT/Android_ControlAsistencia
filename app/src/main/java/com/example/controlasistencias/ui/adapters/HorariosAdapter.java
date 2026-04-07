@@ -1,4 +1,4 @@
-package com.example.controlasistencias;
+package com.example.controlasistencias.ui.adapters;
 
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -14,7 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.controlasistencias.Modelos.Horario;
+import com.example.controlasistencias.models.Horario;
+import com.example.controlasistencias.R;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
     private final String diaActual;
     private final Context context;
 
-    // Estado interno para selección
     private int selectedPosition = -1;
     private String estadoActual = "";
 
@@ -47,14 +47,12 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
     public void onBindViewHolder(@NonNull HorarioViewHolder holder, int position) {
         Horario h = horarios.get(position);
 
-        // 1) Poblamos datos
         holder.txtNombre.setText(h.getNombre());
         holder.txtAsignatura.setText(h.getAsignatura());
         holder.txtGrupo.setText(h.getGrado_grupo());
         String hora = getHoraDia(h);
         holder.txtHorario.setText(hora != null ? hora : "No disponible");
 
-        // 2) Reset UI antes de reutilizar
         holder.chkAsistencia.setOnCheckedChangeListener(null);
         holder.chkRetardo   .setOnCheckedChangeListener(null);
         holder.chkFalta     .setOnCheckedChangeListener(null);
@@ -67,7 +65,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
         holder.btnFirmarJefe   .setVisibility(View.GONE);
         holder.panelObservaciones.setVisibility(View.GONE);
 
-        // 3) Si ésta es la fila seleccionada, muestro el estado
         if (position == selectedPosition) {
             switch (estadoActual) {
                 case "asistencia":
@@ -93,7 +90,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
             }
         }
 
-        // 4) Listeners de checkboxes: actualizan posición + estado
         holder.chkAsistencia.setOnClickListener(v -> {
             selectedPosition = position;
             estadoActual = "asistencia";
@@ -110,16 +106,12 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
             notifyDataSetChanged();
         });
 
-        // 5) Firmar Maestro
         holder.btnFirmarMaestro.setOnClickListener(v -> {
-            // TODO: guardar asistencia/retardo en BD aquí
             selectedPosition = -1;
             notifyDataSetChanged();
         });
 
-        // 6) Firmar Jefe
         holder.btnFirmarJefe.setOnClickListener(v -> {
-            // TODO: guardar falta y firma jefe en BD aquí
             selectedPosition = -1;
             notifyDataSetChanged();
         });
@@ -130,7 +122,6 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
         return horarios.size();
     }
 
-    /** Devuelve la hora del día actual para este horario */
     private String getHoraDia(Horario h) {
         switch (diaActual.toLowerCase()) {
             case "lunes":     return h.getLunes();
@@ -142,34 +133,24 @@ public class HorariosAdapter extends RecyclerView.Adapter<HorariosAdapter.Horari
         }
     }
 
-    /** Hora formateada HH:mm:ss */
     private String getHoraActual() {
         return DateFormat.format("HH:mm:ss", new Date()).toString();
     }
 
-    // ===== Métodos para guardar / restaurar estado tras rotación =====
-
-    /** @return posición del ítem seleccionado (-1 si ninguno) */
     public int getSelectedPosition() {
         return selectedPosition;
     }
 
-    /** @return estado actual ("asistencia", "retardo", "falta" o "") */
     public String getEstadoActual() {
         return estadoActual;
     }
 
-    /**
-     * Restaura el ítem seleccionado y su estado.
-     * Debe llamarse antes de asignar el adapter al RecyclerView.
-     */
     public void setSelection(int position, String estado) {
         this.selectedPosition = position;
         this.estadoActual    = estado;
         notifyDataSetChanged();
     }
 
-    /** ViewHolder interno */
     static class HorarioViewHolder extends RecyclerView.ViewHolder {
         TextView    txtNombre, txtAsignatura, txtGrupo, txtHorario, txtTituloObservaciones;
         CheckBox    chkAsistencia, chkRetardo, chkFalta;

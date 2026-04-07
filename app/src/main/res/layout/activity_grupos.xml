@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F4F7F6"> <include layout="@layout/layout_header" />
+    android:background="#F4F7F6"
+    tools:context=".ui.activities.GruposActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/encabezadoGrupos"
-            android:layout_width="wrap_content"
+        <include layout="@layout/layout_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Grupos del edificio"
-            android:textSize="14sp"
-            android:textAllCaps="true"
-            android:letterSpacing="0.1"
-            android:textStyle="bold"
-            android:textColor="#888888" />
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="8dp">
 
-        <View
-            android:layout_width="40dp"
-            android:layout_height="3dp"
-            android:layout_marginTop="4dp"
-            android:background="#D4AF37" />
+            <TextView
+                android:id="@+id/encabezadoGrupos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grupos del edificio"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.1"
+                android:textStyle="bold"
+                android:textColor="#888888" />
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="4dp"
+                android:background="#D4AF37" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerGrupos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            tools:listitem="@android:layout/simple_list_item_2" />
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerGrupos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="12dp"
-        android:paddingBottom="16dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        tools:listitem="@android:layout/simple_list_item_2" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>

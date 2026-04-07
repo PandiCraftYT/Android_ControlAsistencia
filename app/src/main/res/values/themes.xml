@@ -1,8 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.ControlAsistencias" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/colorEncabezado</item>
+        <!-- Main colors -->
+        <item name="colorPrimary">@color/uas_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/uas_gold</item>
+        <item name="android:statusBarColor">@color/uas_blue</item>
+
+        <!-- Customize your light theme here. -->
+        <item name="android:windowBackground">@color/uas_background</item>
     </style>
 
     <style name="Theme.ControlAsistencias" parent="Base.Theme.ControlAsistencias" />
+
+    <!-- Custom Style for Dialogs -->
+    <style name="UASDialogTheme" parent="Theme.Material3.DayNight.Dialog">
+        <item name="colorPrimary">@color/uas_blue</item>
+        <item name="colorOnSurface">@color/uas_blue</item>
+        <item name="buttonBarPositiveButtonStyle">@style/UASDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/UASDialogButton</item>
+    </style>
+
+    <style name="UASDialogButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

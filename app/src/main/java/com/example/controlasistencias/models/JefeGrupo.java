@@ -1,4 +1,4 @@
-package com.example.controlasistencias.Modelos;
+package com.example.controlasistencias.models;
 
 public class JefeGrupo {
     private String nombre;
@@ -12,4 +12,3 @@ public class JefeGrupo {
         return numero_cuenta;
     }
 }
-

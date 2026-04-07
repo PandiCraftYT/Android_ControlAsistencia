@@ -1,47 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFF9FCFD">
+    android:background="#FFF9FCFD"
+    tools:context=".ui.activities.ProfesoresActivity">
 
-    <!-- Encabezado común -->
-    <include layout="@layout/layout_header" />
-
-    <!-- Zona y Grupo -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtZona"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Horarios - Zona: --"
-            android:textStyle="bold"
-            android:textSize="20sp"
-        android:layout_marginEnd="32dp"
-        android:textColor="#333333" />
+        <!-- Encabezado común -->
+        <include layout="@layout/layout_header" />
 
-        <TextView
-            android:id="@+id/txtGrupo"
-            android:layout_width="wrap_content"
+        <!-- Zona y Grupo -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Grupo: --"
-            android:textStyle="bold"
-            android:textSize="20sp"
-        android:textColor="#333333" />
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/txtZona"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Horarios - Zona: --"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginEnd="32dp"
+                android:textColor="#333333" />
+
+            <TextView
+                android:id="@+id/txtGrupo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grupo: --"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#333333" />
+        </LinearLayout>
+
+        <!-- Contenedor para lista vacía (Empty State) -->
+        <LinearLayout
+            android:id="@+id/layoutEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@android:drawable/ic_menu_today"
+                app:tint="@color/uas_blue"
+                android:alpha="0.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No hay clases programadas para este grupo el día de hoy."
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+
+        <!-- Lista de profesores -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerProfesores"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp" />
+
     </LinearLayout>
 
-    <!-- Lista de profesores -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerProfesores"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/uas_blue"
+        android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>

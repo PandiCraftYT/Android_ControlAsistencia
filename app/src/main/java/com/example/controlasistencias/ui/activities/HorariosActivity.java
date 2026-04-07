@@ -1,4 +1,4 @@
-package com.example.controlasistencias;
+package com.example.controlasistencias.ui.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,14 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlasistencias.Api.ApiService;
 import com.example.controlasistencias.Api.RetrofitClient;
-import com.example.controlasistencias.Modelos.Horario;
+import com.example.controlasistencias.models.Horario;
+import com.example.controlasistencias.ui.adapters.HorariosAdapter;
+import com.example.controlasistencias.R;
+import com.example.controlasistencias.Utils.AppUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +57,7 @@ public class HorariosActivity extends AppCompatActivity {
 
         iniciarRelojEnVivo();
 
-        diaActual = obtenerDiaActual();
+        diaActual = AppUtils.obtenerDiaActual();
 
         String zona = getIntent().getStringExtra("zona");
         String grupo = getIntent().getStringExtra("grupo");
@@ -74,8 +73,6 @@ public class HorariosActivity extends AppCompatActivity {
             public void onResponse(Call<List<Horario>> call, Response<List<Horario>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Horario> todosLosHorarios = response.body();
-                    
-                    // Filtrar por ZONA, GRUPO y por DÍA ACTUAL
                     List<Horario> filtrados = filtrarHorarios(todosLosHorarios, grupo, zona);
                     
                     if (filtrados.isEmpty()) {
@@ -101,36 +98,26 @@ public class HorariosActivity extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                String hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                relojHora.setText(hora);
+                relojHora.setText(AppUtils.getHoraActualMazatlan());
                 handler.postDelayed(this, 1000);
             }
         };
         handler.post(runnable);
     }
 
-    private String obtenerDiaActual() {
-        String[] dias = {"domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"};
-        int idx = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-        return dias[idx];
-    }
-
     private List<Horario> filtrarHorarios(List<Horario> todos, String grupoSeleccionado, String zonaSeleccionada) {
         List<Horario> out = new ArrayList<>();
         for (Horario h : todos) {
-            // 1. Filtrar por Zona (MUY IMPORTANTE para evitar maestros de otros edificios)
             boolean esMismaZona = h.getZona() != null && 
                                  h.getZona().trim().equalsIgnoreCase(zonaSeleccionada.trim());
             
             if (!esMismaZona) continue;
 
-            // 2. Filtrar por Grupo
             boolean esMismoGrupo = h.getGrado_grupo() != null && 
                                   h.getGrado_grupo().trim().equalsIgnoreCase(grupoSeleccionado.trim());
             
             if (!esMismoGrupo) continue;
 
-            // 3. Filtrar por Día Actual
             String valorDia;
             switch (diaActual.toLowerCase()) {
                 case "lunes":     valorDia = h.getLunes();    break;

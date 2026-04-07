@@ -1,4 +1,4 @@
-package com.example.controlasistencias.Modelos;
+package com.example.controlasistencias.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.controlasistencias.ProfesoresActivity;
+import com.example.controlasistencias.ui.activities.ProfesoresActivity;
+import com.example.controlasistencias.models.Grupo;
 import com.example.controlasistencias.R;
 
 import java.util.List;
@@ -38,11 +39,10 @@ public class GrupoAdapter extends RecyclerView.Adapter<GrupoAdapter.ViewHolder> 
         Grupo grupo = listaGrupos.get(position);
         holder.textGrupo.setText(grupo.getGradoGrupo());
 
-        // ✅ Aquí es donde se manda el grupoId
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProfesoresActivity.class);
             intent.putExtra("grupoId", grupo.getId());
-            intent.putExtra("zonaNombre", zonaNombre); // viene de fuera
+            intent.putExtra("zonaNombre", zonaNombre);
             intent.putExtra("grupoNombre", grupo.getGradoGrupo());
             context.startActivity(intent);
         });
@@ -58,8 +58,7 @@ public class GrupoAdapter extends RecyclerView.Adapter<GrupoAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textGrupo = itemView.findViewById(R.id.textViewGrupo); // 👈 Asegúrate que el ID exista en item_grupo.xml
+            textGrupo = itemView.findViewById(R.id.textViewGrupo);
         }
-
     }
 }

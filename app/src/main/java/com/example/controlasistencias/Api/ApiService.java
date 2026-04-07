@@ -1,10 +1,9 @@
 package com.example.controlasistencias.Api;
 
-import com.example.controlasistencias.Modelos.Asistencia;
-import com.example.controlasistencias.Modelos.Grupo;
-import com.example.controlasistencias.Modelos.Horario;
-import com.example.controlasistencias.Modelos.Profesor;
-import com.example.controlasistencias.Modelos.Zona;
+import com.example.controlasistencias.models.Asistencia;
+import com.example.controlasistencias.models.Grupo;
+import com.example.controlasistencias.models.Horario;
+import com.example.controlasistencias.models.Profesor;
 
 import java.util.List;
 
@@ -22,8 +21,8 @@ public interface ApiService {
     @GET("horarios/{zona}")
     Call<List<Horario>> getHorariosPorZona(@Path("zona") String zona);
 
-    @GET("grupos/{zonaId}")
-    Call<List<Grupo>> getGruposPorZona(@Path("zonaId") int zonaId);
+    @GET("grupos/porZona/{zona}")
+    Call<List<Grupo>> getGruposPorZona(@Path("zona") String zona);
 
     @POST("asistencias/registrar")
     Call<Void> registrarAsistencia(@Body Asistencia asistencia);
@@ -31,13 +30,15 @@ public interface ApiService {
     @GET("jefesgrupo/porGrupo/{grupoId}")
     Call<List<String>> getJefesGrupoPorGrupo(@Path("grupoId") int grupoId);
 
-    // Ruta corregida para buscar asistencias
     @GET("asistencias/porGrupo/{grupoId}")
     Call<List<Asistencia>> getAsistenciasPorGrupo(@Path("grupoId") int grupoId);
 
-    @GET
-    Call<List<Grupo>> getGruposPorZona(@Url String url);
+    @GET("profesores/porGrupo/{grupoId}")
+    Call<List<Profesor>> getProfesoresPorGrupo(@Path("grupoId") int grupoId);
 
     @GET
-    Call<List<Profesor>> getProfesoresPorGrupo(@Url String url);
+    Call<List<Grupo>> getGruposPorZonaUrl(@Url String url);
+
+    @GET
+    Call<List<Profesor>> getProfesoresPorGrupoUrl(@Url String url);
 }

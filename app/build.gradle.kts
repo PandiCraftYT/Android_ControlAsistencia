@@ -36,22 +36,24 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.poi)
-    implementation(libs.poi.ooxml)
     implementation(libs.zxing.android.embedded)
     implementation(libs.core)
 
     // recyclerview
     implementation(libs.recyclerview)
-    // ZXing para escaneo QR
-    implementation(libs.core)
-    implementation(libs.zxing.android.embedded)
+    
     // retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
-    implementation(libs.recyclerview)
+    
+    // Room
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.espresso.intents)
 }

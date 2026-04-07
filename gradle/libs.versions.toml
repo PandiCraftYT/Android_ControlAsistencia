@@ -11,18 +11,18 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 retrofit = "2.9.0"
 recyclerview = "1.4.0"
-poi = "5.2.3"
 zxingAndroidEmbedded = "4.3.0"
+room = "2.6.1"
 
 [libraries]
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.1.4" }
 core = { module = "com.google.zxing:core", version.ref = "core" }
-poi-ooxml = { group = "org.apache.poi", name = "poi-ooxml", version.ref = "poi" }
-poi = { group = "org.apache.poi", name = "poi", version.ref = "poi" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoCore" }
+espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -30,7 +30,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
